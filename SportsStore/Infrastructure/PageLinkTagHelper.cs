@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Razor.TagHelpers;
 using SportsStore.Models.ViewModels;
 
 namespace SportsStore.Infrastructure
-{   
+{
     [HtmlTargetElement("div", Attributes = "page-model")]
     public class PageLinkTagHelper : TagHelper
     {
@@ -16,40 +16,40 @@ namespace SportsStore.Infrastructure
         {
             _urlHelperFactory = helperFactory;
         }
-        
-        [ViewContext]
-        [HtmlAttributeNotBound]
-        public ViewContext ViewContext { get; set; }
-        
+
+        [ViewContext] [HtmlAttributeNotBound] public ViewContext ViewContext { get; set; }
+
         public PagingInfo PageModel { get; set; }
-        
+
         public string PageAction { get; set; }
 
         public bool PageClassEnabled { get; set; } = false;
         public string PageClass { get; set; }
         public string PageClassNormal { get; set; }
         public string PageClassSelected { get; set; }
+
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-            IUrlHelper urlHelper = _urlHelperFactory.GetUrlHelper(ViewContext);
-            TagBuilder result = new TagBuilder("div");
-            for (int i = 1; i < PageModel.TotalPages; i++)
+            var urlHelper = _urlHelperFactory.GetUrlHelper(ViewContext);
+            var result = new TagBuilder("div");
+            for (var i = 1; i < PageModel.TotalPages; i++)
             {
-                TagBuilder tag = new TagBuilder("a");
+                var tag = new TagBuilder("a");
                 tag.Attributes["href"] = urlHelper.Action(PageAction,
                     new {ProductPage = i});
                 if (PageClassEnabled)
                 {
                     tag.AddCssClass(PageClass);
                     tag.AddCssClass(i == PageModel.CurrentPage
-                        ? PageClassSelected : PageClassNormal);
+                        ? PageClassSelected
+                        : PageClassNormal);
                 }
+
                 tag.InnerHtml.Append(i.ToString());
                 result.InnerHtml.AppendHtml(tag);
             }
 
             output.Content.AppendHtml(result.InnerHtml);
-            
         }
     }
 }

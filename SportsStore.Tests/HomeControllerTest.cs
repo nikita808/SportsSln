@@ -1,59 +1,61 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
 using Moq;
 using SportsStore.Controllers;
 using SportsStore.Models;
 using SportsStore.Models.ViewModels;
 using Xunit;
 
-namespace SportsStore.Tests {
-
-    public class ProductControllerTests {
-
+namespace SportsStore.Tests
+{
+    public class ProductControllerTests
+    {
         [Fact]
-        public void Can_Use_Repository() {
+        public void Can_Use_Repository()
+        {
             // Arrange
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            mock.Setup(m => m.Products).Returns((new Product[] {
+            var mock = new Mock<IStoreRepository>();
+            mock.Setup(m => m.Products).Returns(new[]
+            {
                 new Product {ProductId = 1, Name = "P1"},
                 new Product {ProductId = 2, Name = "P2"}
-            }).AsQueryable<Product>());
+            }.AsQueryable());
 
-            HomeController controller = new HomeController(mock.Object);
+            var controller = new HomeController(mock.Object);
 
             // Act
-            ProductsListViewModel result =
+            var result =
                 controller.Index().ViewData.Model as ProductsListViewModel;
 
             // Assert
-            Product[] prodArray = result.Products.ToArray();
+            var prodArray = result.Products.ToArray();
             Assert.True(prodArray.Length == 2);
             Assert.Equal("P1", prodArray[0].Name);
             Assert.Equal("P2", prodArray[1].Name);
         }
 
         [Fact]
-        public void Can_Paginate() {
+        public void Can_Paginate()
+        {
             // Arrange
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            mock.Setup(m => m.Products).Returns((new Product[] {
+            var mock = new Mock<IStoreRepository>();
+            mock.Setup(m => m.Products).Returns(new[]
+            {
                 new Product {ProductId = 1, Name = "P1"},
                 new Product {ProductId = 2, Name = "P2"},
                 new Product {ProductId = 3, Name = "P3"},
                 new Product {ProductId = 4, Name = "P4"},
                 new Product {ProductId = 5, Name = "P5"}
-            }).AsQueryable<Product>());
+            }.AsQueryable());
 
-            HomeController controller = new HomeController(mock.Object);
+            var controller = new HomeController(mock.Object);
             controller.PageSize = 3;
 
             // Act
-            ProductsListViewModel result =
-               controller.Index(2).ViewData.Model as ProductsListViewModel;
+            var result =
+                controller.Index(2).ViewData.Model as ProductsListViewModel;
 
             // Assert
-            Product[] prodArray = result.Products.ToArray();
+            var prodArray = result.Products.ToArray();
 
             Assert.True(prodArray.Length == 2);
             Assert.Equal("P4", prodArray[0].Name);
@@ -61,28 +63,29 @@ namespace SportsStore.Tests {
         }
 
         [Fact]
-        public void Can_Send_Pagination_View_Model() {
-
+        public void Can_Send_Pagination_View_Model()
+        {
             // Arrange
-            Mock<IStoreRepository> mock = new Mock<IStoreRepository>();
-            mock.Setup(m => m.Products).Returns((new Product[] {
+            var mock = new Mock<IStoreRepository>();
+            mock.Setup(m => m.Products).Returns(new[]
+            {
                 new Product {ProductId = 1, Name = "P1"},
                 new Product {ProductId = 2, Name = "P2"},
                 new Product {ProductId = 3, Name = "P3"},
                 new Product {ProductId = 4, Name = "P4"},
                 new Product {ProductId = 5, Name = "P5"}
-            }).AsQueryable<Product>());
+            }.AsQueryable());
 
             // Arrange
-            HomeController controller =
-                new HomeController(mock.Object) { PageSize = 3 };
+            var controller =
+                new HomeController(mock.Object) {PageSize = 3};
 
             // Act
-            ProductsListViewModel result =
+            var result =
                 controller.Index(2).ViewData.Model as ProductsListViewModel;
 
             // Assert
-            PagingInfo pageInfo = result.PagingInfo;
+            var pageInfo = result.PagingInfo;
             Assert.Equal(2, pageInfo.CurrentPage);
             Assert.Equal(3, pageInfo.ItemsPerPage);
             Assert.Equal(5, pageInfo.TotalItems);
