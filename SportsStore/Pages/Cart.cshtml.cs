@@ -8,13 +8,13 @@ namespace SportsStore.Pages
 {
     public class CartModel : PageModel
     {
-        private IStoreRepository _repository;
-        
+        private readonly IStoreRepository _repository;
+
         public CartModel(IStoreRepository repo)
         {
             _repository = repo;
         }
-        
+
         public Cart Cart { get; set; }
         public string ReturnUrl { get; set; }
 
@@ -31,7 +31,7 @@ namespace SportsStore.Pages
             Cart = HttpContext.Session.GetJson<Cart>("cart") ?? new Cart();
             Cart.AddItem(product, 1);
             HttpContext.Session.SetJson("cart", Cart);
-            return RedirectToPage(new {returnUrl = returnUrl});
+            return RedirectToPage(new {returnUrl});
         }
     }
 }

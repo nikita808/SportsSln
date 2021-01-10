@@ -5,14 +5,13 @@
     Home
 </a>
 
-@foreach (string category in Model)
+@foreach (var category in Model)
 {
     <a class="btn btn-block
-       @(category == ViewBag.SelectedCategory 
-           ? "btn-primary" : "btn-outline-secondary")"
+       @(category == ViewBag.SelectedCategory ? "btn-primary" : "btn-outline-secondary")"
        asp-action="Index" asp-controller="Home"
        asp-route-category="@category"
        asp-route-productPage="1">
-       @category
-       </a>
+        @category
+    </a>
 }

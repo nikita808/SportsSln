@@ -13,7 +13,7 @@ namespace SportsStore.Components
         {
             Repository = repository;
         }
-        
+
         public IViewComponentResult Invoke()
         {
             ViewBag.SelectedCategory = RouteData?.Values["category"];

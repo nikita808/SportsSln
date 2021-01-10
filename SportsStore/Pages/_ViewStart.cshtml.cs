@@ -6,7 +6,6 @@ namespace SportsStore.Pages
     {
         public void OnGet()
         {
-            
         }
     }
 }
