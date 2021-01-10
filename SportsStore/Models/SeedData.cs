@@ -47,13 +47,13 @@ namespace SportsStore.Models
                     {
                         Name = "Stadium",
                         Description = "Flat-packed 35,000-seat stadium",
-                        Category = "Soccer", Price = 79500
+                        Category = "Soccer", Price = 100000000
                     },
                     new Product
                     {
                         Name = "Thinking Cap",
                         Description = "Improve brain efficiency by 75%",
-                        Category = "Chess", Price = 16
+                        Category = "Chess", Price = 160
                     },
                     new Product
                     {
